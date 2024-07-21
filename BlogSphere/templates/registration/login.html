@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}Contact{% endblock %}
+{% block content %}
+{% load static %}
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="container">
+        <nav class="breadcrumb bg-transparent m-0 p-0">
+            <a class="breadcrumb-item" href="{% url 'home' %}">Home</a>
+            <span class="breadcrumb-item active">Login</span>
+        </nav>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+
+<!-- Contact Start -->
+<div class="container-fluid py-3">
+    <div class="container">
+        <div class="bg-light py-2 px-4 mb-3">
+            <h3 class="m-0">Login</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="contact-form bg-light mb-3" style="padding: 30px;">
+                    <div id="success"></div>
+                    <form method="post" action="{% url 'login' %}" novalidate="novalidate">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <input type="text" class="form-control p-4" id="mobile" placeholder="Your Mobile"
+                                        required="required" data-validation-required-message="Please enter your mobile"
+                                        value="{{user_mobile}}" name="mobile"/>
+                                    <p id="errormsg" class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px;"
+                                        type="button" id="sendOTPButton">Send OTP</button>
+                                    <p id="otpmsg" class="help-block text-success"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <input type="text" class="form-control p-4" id="subject" placeholder="Enter OTP"
+                                        required="required" data-validation-required-message="Please enter OTP" name="OTP"/>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px;"
+                                type="submit">Login</button>
+                            <p>Don't have an account! <a href="{% url 'register' %}">Register Here</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact End -->
+
+<script>
+    document.getElementById('sendOTPButton').addEventListener("click", fetchdata);
+    function fetchdata() {
+        let errormsg = document.getElementById('errormsg');
+        let otpmsg = document.getElementById('otpmsg');
+        let mobile = parseInt(document.getElementById('mobile').value);
+        otpmsg.innerHTML = 'Sending OTP ...'
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = "json";
+        xhr.open("GET", "/fetchmobilelogin?mobile=" + encodeURIComponent(mobile));
+        xhr.onload = function () {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                if (xhr.status == 200) {
+                    if (xhr.response.status == 'error') {
+                        errormsg.innerHTML = xhr.response.error
+                        otpmsg.innerHTML = ''
+
+                    }
+                    else if (xhr.response.status == 'success') {
+                        otpmsg.innerHTML = xhr.response.message
+                    }
+                }
+            }
+        }
+        xhr.send();
+
+    }
+</script>
+
+
+{% endblock %}

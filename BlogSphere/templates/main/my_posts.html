@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}My Blogs{% endblock %}
+{% block content %}
+{% load static %}
+
+{% include 'components/msg.html' %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>My Blogs</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        {% if posts %}
+        <ol>
+            {% for post in posts %}
+            <div class="col-md-12">
+                <div class="list-group">
+                    <h3>
+                        <li class="font-weight-bold">
+                            <div class="list-group-item d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <h5 id="title">{{ post.title|truncatechars:90 }}</h5>
+                                </div>
+                                <div class="post-actions ml-auto">
+                                    <a id="edit_post" class="btn btn-outline-success btn-m"
+                                        href="{% url 'edit_post' post.id %}">Edit</a>
+                                    <a id="delete_post" class="btn btn-outline-danger btn-m"
+                                        href="{% url 'delete_post' post.id %}">Delete</a>
+                                </div>
+                            </div>
+                        </li>
+                    </h3>
+                </div>
+            </div>
+            {% endfor %}
+        </ol>
+        {% else %}
+        <div class="alert alert-info mx-auto" style="width: 30rem;">
+            <p class="text-center my-auto">You don't have any blogs.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
