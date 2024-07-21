@@ -74,4 +74,7 @@ For more information, refer to the [Twilio documentation](https://www.twilio.com
 ## Contributing
 If you would like to contribute to this project, please fork the repository and submit a pull request. Your contributions are always welcome!
 
+## Demo
+Here is a demo video of the project: [Watch Demo Video](https://drive.google.com/file/d/17CJHmCc8ctxZUaT-aIilgoUau30wZeoD/view?usp=drive_link)
+
 Happy Blogging with BlogSphere!
